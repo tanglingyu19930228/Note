@@ -122,3 +122,17 @@ $git push origin v1.0
 $git tag -d v1.0  + $git push origin :refs/tags/v0.9
 #删除远程的标签分两步，先删除本地的标签，再push，格式如上
 
+.gitignore文件用来忽略带有敏感信息的文件，将需要忽略的文件后缀名填写完成后提交即可
+$git add -f app.class
+#即使.class文件会被忽略，也能强制添加
+$git check-ignore -v app.class
+#查找出.gitignore文件中对应的规则
+
+$git config --global alias. co checkout
+#配置别名，用co表示checkout
+举个栗子：
+$ git config --global alias.unstage 'reset HEAD'
+$ git config --global alias.last 'log -1'
+$git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+#每个仓库的Git配置文件都放在.git/config文件中
+#每个用户的Git配置文件都放在用户主目录下的.gitconfig中
