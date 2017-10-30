@@ -100,5 +100,18 @@ $git branch -D branch-A
 
 $git remote
 #查看远程库的信息，$git remote -v 显示更详细的信息
+$git push origin branch-b
+#从本地推送分支到远程
+$git pull
+#抓取远程的提交，当你和别人的提交有冲突时
+$git checkout -b branch-c origin/branch-b
+#在本地创建和远程分支对应的分支
+$git branch --set-upstream branch-c origin/branch-b
+#指定本地分支branch-c与远程branch-b的连接
 
-
+$git tag V1.0
+#切换到分支上，打上标签，默认为head，$git tag v0.9 6224098 给特定的提交打标签，可以是过去的
+$git show v1.0
+#查看标签信息
+$git tag -a v1.0 -m "version 0.1 released" 3333333
+#创建带有说明的标签，-a换成-s用PGP签名标签
