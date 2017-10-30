@@ -115,3 +115,10 @@ $git show v1.0
 #查看标签信息
 $git tag -a v1.0 -m "version 0.1 released" 3333333
 #创建带有说明的标签，-a换成-s用PGP签名标签
+$git tag -d v1.0
+#删除本地标签
+$git push origin v1.0
+#推送标签到远程，将v1.0换成--tags ，一次性推送所有的标签
+$git tag -d v1.0  + $git push origin :refs/tags/v0.9
+#删除远程的标签分两步，先删除本地的标签，再push，格式如上
+
