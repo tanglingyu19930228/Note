@@ -1,4 +1,5 @@
 Git is a distributed version control system.
 Git is free software distributed under the GPL.
 create a new branch is dev.
-create a something to cp1.
+create a new branch is cp1.
+
