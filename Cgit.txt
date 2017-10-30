@@ -51,10 +51,10 @@ $git reset head new.txt
 $git rm new1.txt
 $git commit -m "delete"
 2、恢复文件
-$git checkout --"new1.txt"
+$git checkout --new1.txt
 
 $ssh-keygen -t rsa -C "youremail@example.com"
-#创建ssh-key
+#创建ssh-key，只能在用户目录下创建
 
 $git remote add origin https://github.com/Csharing/learngit.git
 #关联远程库
