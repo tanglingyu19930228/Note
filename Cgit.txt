@@ -1,0 +1,117 @@
+$ git add path   
+#提交文件，可提交多个文件以空格隔开
+
+$ git commit -m "备注"
+#提交事务，即创建一个版本
+
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"
+#为机器配置名字和email，global全局，也可为单独的仓库配置
+
+$ cd /c/Users/HaSEE/learngit
+#切换目录
+$mkdir name
+#当前目录下创建name文件夹
+$cd name
+#切换到当前目录下的name文件夹
+$pwd
+#显示当前命令行目录
+$git init
+#将当前文件夹变成仓库
+
+win的记事本在每个文件开头添加了0xefbbbf（十六进制）的字符
+
+$git status
+#查看仓库状态
+$ git diff new.txt
+#查看修改了哪些内容
+
+$git log
+#查看所有的版本，按q退出
+$git log --pretty=oneline
+#查看所有的版本，以版本号加备注的形式出现
+
+$git reset --hard HEAD^
+#,HEAD表示当前版本，回退到上一个版本，^表示上个，^^表示上上个，HEAD`100
+$cat new.txt
+#查看内容
+$git reset --hard 6733044
+#回退到以6733044开头的版本号，Git会自动查找
+$git reflog
+#查看所有执行过的命令，最后一个命令排在第一位
+
+Git管理的是修改，对修改会有多种操作
+$git checkout --new.txt
+#工作区修改===撤回到最新的状态 优先级：暂存区》版本库
+$git reset head new.txt
+#暂存区修改===暂存区的修改回退到无状态，再用checkout修改
+
+当你删除了一个文件时：
+1、删除文件
+$git rm new1.txt
+$git commit -m "delete"
+2、恢复文件
+$git checkout --"new1.txt"
+
+$ssh-keygen -t rsa -C "youremail@example.com"
+#创建ssh-key
+
+$git remote add origin https://github.com/Csharing/learngit.git
+#关联远程库
+$git push -u origin master 
+#将本地库的内容推送到远程库，github添加sshkey，两个库的名字必须一致，两个库的合并不能有冲突
+$git push origin master
+#第一次用上面的命令，再提交就用本次命令
+$git remote rm origin
+#解除关联
+$git clone https://github.com/Csharing/learngit.git
+#克隆git库，首先需要在github上添加shh-key，win下使用https，Unix下使用ssh，克隆的库会自动关联origin
+
+$git checkout -b dev
+#创建并切换到dev分支，相当于$git branch dev + $git checkout dev
+$git branch
+#查看当前分支
+$git merge dev
+#指定分支合并到当前分支，fast-forward模式
+$git branch -d dev
+#删除dev分支
+
+当遇到分支冲突时
+$git status
+$cat mew.txt
+#查看冲突的文件，再查看冲突的内容(此时文档会用<<<<<<<，=======，>>>>>>>标记不同分支内容）
+ 修改好后再提交，合并分支。
+$git log --graph --pretty=oneline --abbrev-commit
+#查看分支合并情况
+$git merge --no-ff -m "merge with no-ff" cp1
+#采用no-ff模式合并，会产生commit记录，而fast-ward模式则没有分支合并的记录
+
+$git stash
+#保存当前的工作状态，多用于修复bug时保存你当时的工作，注意运行命令之前要ctrl+s保存一下
+$git stash list
+#查看stash的保存记录
+$git stash pop
+#恢复到最新的工作现场，可多次使用。相当于$git stash apply +$git stash drop
+$git stash apply stash@{0}
+#恢复到指定的工作现场
+
+$git branch -D branch-A
+#删除一个没有被合并的分支
+
+$git remote
+#查看远程库的信息，$git remote -v 显示更详细的信息
+$git push origin branch-b
+#从本地推送分支到远程
+$git pull
+#抓取远程的提交，当你和别人的提交有冲突时
+$git checkout -b branch-c origin/branch-b
+#在本地创建和远程分支对应的分支
+$git branch --set-upstream branch-c origin/branch-b
+#指定本地分支branch-c与远程branch-b的连接
+
+$git tag V1.0
+#切换到分支上，打上标签，默认为head，$git tag v0.9 6224098 给特定的提交打标签，可以是过去的
+$git show v1.0
+#查看标签信息
+$git tag -a v1.0 -m "version 0.1 released" 3333333
+#创建带有说明的标签，-a换成-s用PGP签名标签
