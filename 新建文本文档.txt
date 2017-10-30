@@ -62,6 +62,5 @@ $git push -u origin master
 #将本地库的内容推送到远程库，两个库的名字必须一致，两个库的合并不能有冲突
 $git push origin master
 #第一次用上面的命令，再提交就用本次命令
-
-
 $git remote rm origin
+#删除远程源
