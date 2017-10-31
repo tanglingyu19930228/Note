@@ -1,6 +1,6 @@
 一：配置GIT
 
-	*第一次使用Git bash,为机器配置名字和email，global全局，也可为单独的仓库配置
+	*第一次使用Git bash,为机器配置name和email，global全局，也可为单独的仓库配置
 	$ git config --global user.name "Your Name"
 	$ git config --global user.email "email@example.com"
 	
@@ -87,6 +87,7 @@
 		#更新你的本地仓库
 
 七：管理分支
+
 	1.创建分支
 		$git branch
 		#查看当前分支
