@@ -50,7 +50,7 @@ SQL语句
 			mysql> ALTER TABLE t1 DROP column1
 			--t1表中删除column1列
 			
-二：管理约束：
+二：管理约束
 
 	约束(CONSTRAINTS):
 		
@@ -109,7 +109,7 @@ SQL语句
 		mysql> ALTER TABLE t1 ALTER column1 DROP DEFAULT;
 		--撤销DEFAULT约束
 			
-三：管理单表：
+三：管理单表
 	
 	1.SELECT
 	
@@ -118,16 +118,24 @@ SQL语句
 			mysql> SELECT column1,column2 FROM t1;
 			mysql> SELECT * FROM t1;
 			mysql> SELECT DISTINCT column1 FROM t1;--去重
+			LIMIT
+				mysql> SELECT * FROM t1 LIMIT 3;
+				--选取前三条
+				mysql> SELECT * FROM t1 LIMIT 2,3;
+				--从第3条开始选取3条数据,第一个参数默认从0开始
 		
 		*复杂选取
 		
-			--WHERE子句{=,<>,>,<,>=,<=,BETWEEN,LIKE}
+			--WHERE子句{=,<>,>,<,>=,<=,BETWEEN,LIKE，IN}
 				mysql> SELECT * FROM t1 WHERE column1='Cshare';
-				mysql> SELECT * FROM t1 WHERE column1>100;
-				mysql> SELECT *FROM t1 WHERE column1 BETWEEN 4 AND 8
-				--BETWEEN可以是数字，文本，日期
-				mysql> SELECT *FROM tb1 WHERE username LIKE 'c%'
-				mysql> SELECT *FROM tb1 WHERE username NOT LIKE '_c%'
+				mysql> SELECT * FROM t1 WHERE column1>100;			
+				mysql> SELECT * FROM t1 WHERE column1 BETWEEN value1 AND value2
+				mysql> SELECT * FROM t1 WHERE column1 BETWEEN 'a' AND 'h';
+				--BETWEEN可以是数字，文本，日期,包含value1，value2，NOT BETWEEN 相补
+				mysql> SELECT * FROM t1 WHERE column1 LIKE 'c%'
+				mysql> SELECT * FROM t1 WHERE column1 NOT LIKE '%c%'
+				--'%'表示一个或多个,'_'表示一个，[charlist],[^charlist]表示字符列中的一个
+				mysql> SELECT * FROM t1 WHERE column1 IN (value1,value2,...)
 			--AND和OR运算符
 				mysql> SELECT * FROM t1 WHERE column1='Cshare' AND column2>100;
 				mysql> SELECT * FROM t1 WHERE column1='Cshare' OR column2>100;
@@ -159,6 +167,9 @@ SQL语句
 		mysql> DELETE * FROM t1;
 		mysql> TRUNCATE TABLE t1;
 		--清空表格
+		
+四：管理多表
+		
 	
 	
 	
@@ -188,4 +199,8 @@ SQL语句
 
 
 --http://www.w3school.com.cn/sql/sql_top.asp	
-/*参考：数据类型 http://www.w3school.com.cn/sql/sql_create_table.asp*/
+/*参考：
+1.数据类型：http://www.w3school.com.cn/sql/sql_create_table.asp
+
+
+*/
