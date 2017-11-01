@@ -118,11 +118,6 @@ SQL语句
 			mysql> SELECT column1,column2 FROM t1;
 			mysql> SELECT * FROM t1;
 			mysql> SELECT DISTINCT column1 FROM t1;--去重
-			LIMIT
-				mysql> SELECT * FROM t1 LIMIT 3;
-				--选取前三条
-				mysql> SELECT * FROM t1 LIMIT 2,3;
-				--从第3条开始选取3条数据,第一个参数默认从0开始
 		
 		*复杂选取
 		
@@ -146,6 +141,11 @@ SQL语句
 				mysql> SELECT * FROM t1 ORDER BY column1 DESC;
 				mysql> SELECT * FROM t1 ORDER BY column1 DESC,column2 ASC;
 				--column1升序下column2降序
+			--LIMIT语句
+				mysql> SELECT * FROM t1 LIMIT 3;
+				--选取前三条
+				mysql> SELECT * FROM t1 LIMIT 2,3;
+				--从第3条开始选取3条数据,第一个参数默认从0开始				
 	
 	2.INSERT
 	
