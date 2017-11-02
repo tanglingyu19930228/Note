@@ -16,7 +16,7 @@ SQL语句--mysql
 	
 		创建：
 		
-			mysql> create table t1(
+			mysql> CREATE TABLE t1(
 				ID int NOT NULL AUTO_INCREMENT，
 				number1 int(10) UNSIGNED NOT NULL,
 				number2 int NOT NULL,
@@ -29,6 +29,9 @@ SQL语句--mysql
 				CHECK(number2>1)，
 				UNIQUE(name1)
 				);
+				
+			mysql> CREATE TABLE t2 SELECT * FROM t3;
+			--可用于备份
 				
 			特殊字段：
 			
@@ -44,14 +47,15 @@ SQL语句--mysql
 		删除：
 		
 			mysql> DROP TABLE t1;
-			--删除t1表
+			mysql> DROP TABLE IF EXISTS t1;
+			--删除t1表,需要用sql文件创建t1表时，可利用IF EXISTS来删除t1表而不会报错
 			
 		查看：
 		
 			mysql> SHOW TABLES;
 			--查看当前数据库下的所有表
-
 			mysql> SHOW COLUMNS FROM t1;
+			mysql> DESC t1;
 			--查看t1表的表结构
 			mysql> SHOW CREATE TABLE t1;
 			--查看t1表的创建信息，可找到自动生成的索引名称
@@ -62,7 +66,7 @@ SQL语句--mysql
 			--t1表重命名为t2表
 			mysql> ALTER TABLE t1 ADD column1 ENUM('old','young') NOT NULL
 			--t1表中添加column1列
-			mysql> ALTER TABLE t1 DROP column1
+			mysql> ALTER TABLE t1 DROP column1，DROP column2；
 			--t1表中删除column1列
 			mysql> ALTER TABLE t1 MODIFY COLUMN column1 INT;
 			--修改column1的数据类型为int，可自定义多样化的datatype
@@ -135,7 +139,7 @@ SQL语句--mysql
 			
 三：管理单表
 	
-	1.SELECT
+	1.SELECT(子查询)
 	
 		*简单选取
 		
@@ -182,12 +186,13 @@ SQL语句--mysql
 	2.INSERT
 	
 		mysql> INSERT INTO t1 VALUES(value1,value2,value3);
-		--t1有多少列，values就要有多少值
+		--t1有多少列，values就要有多少值，into可以省略，但是INSERT INTO 是标准写法
 		mysql> INSERT INTO t1(column1,column2) VALUES(value1,value2);
+		mysql> INSERT t1 SET column1=value1,column2=value2;
 		--column和value需要一一对应
 		mysql> INSERT INTO t1(column1,column2) SELECT column3,column4 FROM t2
 		--column1,column2与column3,column4的格式要对齐
-	
+		
 	3.UPDATE
 	
 		mysql> UPDATE t1 SET column1=new_value1,column2=new_value2 WHERE column3='Cshare'
