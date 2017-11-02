@@ -95,6 +95,8 @@
 		#查看当前分支
 		$git checkout -b dev
 		#创建并切换到dev分支，相当于$git branch dev + $git checkout dev
+		$git branch -m a b
+		#重命名a分支为b
 		$git branch -d dev
 		#删除dev分支
 		$git branch -D branch-A
@@ -117,15 +119,21 @@
 八：管理远程分支
 
 	$git remote
-	#查看远程库的信息，$git remote -v 显示更详细的信息
+	#查看远程库的信息，$git remote -v 显示更详细的信息，不与远程同步
+	$git remote show origin
+	#与github比对，查看origin的远程库信息
+	$git branch -a
+	#可以查看origin的分支情况，不与远程同步
 	$git push origin branch-b
 	#从本地推送分支到远程
 	$git pull
-	#抓取远程的提交，当你和别人的提交有冲突时
+	#抓取远程的提交，当你和别人的提交有冲突时 $git pull origin master同步master分支
 	$git checkout -b branch-b origin/branch-b
 	#在本地创建和远程分支对应的分支
 	$git branch --set-upstream branch-c origin/branch-c
 	#指定本地分支branch-c与远程branch-b的连接
+	$git push origin -d branch-A
+	#删除远程分支branch-A
 
 九：管理工作状态
 
