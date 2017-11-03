@@ -123,7 +123,7 @@ SQL语句--mysql
 		 
 		6.DEFAULT --约束用于向列中插入默认值
 		
-			OrderDate date DEFAULT GETDATE(),
+			OrderDate DATE DEFAULT GETDATE(),
 			--DEFAULT可以插入函数
 			mysql> ALTER TABLE t1 ALTER column1 SET DEFAULT 'Cshare';
 			--当已被创建时，在column1列创建DEFAULT约束
@@ -210,10 +210,12 @@ SQL语句--mysql
 四：管理多表
 
 	--别名 Aliases
+	
 		mysql> SELECT column1 FROM table1 AS t1
 		mysql> SELECT column1 AS co1 FROM t1
 		mysql> SELECT t1.column1,t2.column1 FROM table1 AS t1,table2 AS t2 
 		--以column1，column2为列构成的表，若不足则最后一条数据向下填充
+		
 		
 	JOIN:--用于根据两个或多个表中的列之间的关系，从这些表中查询数据
 	
@@ -231,11 +233,13 @@ SQL语句--mysql
 		
 		FULL JOIN--A∪B  只要其中某个表存在匹配，FULL JOIN 关键字就会返回行。
 		mysql> SELECT t1.column1,t2.column1 FROM t1 FULL JOIN t2 ON t1.column2=t2.column2
+		
 	
 	UNION:--UNION操作符用于合并两个或多个具有相似结构的SELECT语句
 	
 		mysql> SELECT * FROM t1 UNION SELECT * FROM t2;
 		--UNION操作符选取不同的值，如果允许重复的值，请使用 UNION ALL
+		
 		
 五：创建视图
 
@@ -250,33 +254,104 @@ SQL语句--mysql
 		删除
 			mysql> DROP VIEW view1;
 			
+			
 六：SQL函数
 
-	DATE函数
-		mysql> SELECT now();
-		--返回当前时间
-		mysql> SELECT date(now);
-		--提取日期
+	常用函数
+
+		DATE函数
+			mysql> SELECT now();
+			--返回当前时间
+			mysql> SELECT DATE(now);
+			--提取日期
+			SELECT DATE_FORMAT(NOW(),'%m/%d/%y');
+			--指定日期格式，%Y2017|%y17
+			
+		NULL判断
+			mysql> WHERE column1 IS NULL
+			--判断是否为空，与IS NOT NULL 相补
+			
+		IFNULL()
+			mysql> SELECT IFNULL(a,b);
+			--如果a不为NULL则返回a，否则返回b
+			
+		IF()
+			mysql> SELECT IF(a,b,c);
+			--a=true返回b， a=false返回c
+			
+		GROUP BY
+			mysql> SELECT SUM(id),name FROM t1 GROUP BY name;
+			--以name分组处理数据，若不对id进行处理，则取第一个值
+			
+		HAVING 
+			mysql> SELECT name FROM t1 GROUP BY name HAVING COUNT(name)<2;
+			--在SQL中增加HAVING子句原因是WHERE关键字无法与合计函数一起使用。
+			
+		CONCAT()
+			mysql> SELECT CONCAT(column1，column2) AS column3 FROM t1;
+		--字符连接
 		
-	NULL判断
-		mysql> WHERE column1 IS NULL
-		--判断是否为空，与IS NOT NULL 相补
+		CONCAT_WS()
+			mysql> SELECT CONCAT('_',column1，column2) AS column3 FROM t1;
+		--以指定符连接
 		
-	IFNULL()
-		mysql> SELECT IFNULL(a,b);
-		--如果a不为NULL则返回a，否则返回b
+		LENGTH()
+			mysql> SELECT LENGTH(column1) FROM t1;
+		--获取长度
 		
-	IF()
-		mysql> SELECT IF(a,b,c);
-		--a=true返回b， a=false返回c
+		REPLACE()
+			mysql> SELECT REPLACE(cloumn1，'A','B') FROM t1;
+		--替换
 		
-	GROUP BY
-		mysql> SELECT SUM(id),name FROM t1 GROUP BY name;
-		--以name分组处理数据，若不对id进行处理，则取第一个值
+		CONNECTION_ID(),USER(),VERSION(),
+			mysql>  CONNECTION_ID(),USER(),VERSION();
+		--连接ID，用户，版本
 		
-	HAVING 
-		mysql> SELECT name FROM t1 GROUP BY name HAVING COUNT(name)<2;
-		--在SQL中增加HAVING子句原因是WHERE关键字无法与合计函数一起使用。
+		LAST_INSERT_ID()
+			mysql> SELECT LAST_INSERT_ID() FROM t1;
+		--返回上一条修改的一组数据，第一个自增字段的值,
+		
+		ROW_COUNT()
+			mysql> SELECT ROW_COUNT();
+		--返回上一条sql影响的行数，update，delete返回正数，insert返回负数，
+		
+		AVG(),COUNT(),MAX(),MIN(),SUM()
+		--平均数，统计，最大数，最小数，和
+		
+		MD5();
+		--信息摘要算法
+		
+	
+	自定义函数
+	
+		--无参数
+		
+		创建：
+				mysql> CREATE FUNCTION func1()
+				RETURNS VARCHAR(255)
+				RETURN DATE_FORMAT(NOW(),'%m/%d/%y');
+					
+		调用：
+			mysql> SELECT func1();
+			
+		删除：
+			mysql> DROP FUNCTION func1;
+			
+		--有参数
+		
+		创建：
+				mysql> CREATE FUNCTION func2(num1 INT UNSIGNED,num2 INT UNSIGNED)
+				RETURNS FLOAT(10，2) UNSIGNED
+				RETURN (num1+num2)/2;
+				
+		调用：
+				mysql> SELECT func2(column1,column2) FROM t1;
+				
+		--复合结构
+		
+		
+		
+	
 		
 		
 	
@@ -330,5 +405,7 @@ SQL语句--mysql
 
 【1】数据类型：http://www.w3school.com.cn/sql/sql_datatypes.asp
 【2】date函数：http://www.w3school.com.cn/sql/sql_dates.asp
+代理：
+http://blog.csdn.net/xsjyahoo/article/details/51568712
 
 */
