@@ -234,6 +234,8 @@ SQL语句--mysql
 		FULL JOIN--A∪B  只要其中某个表存在匹配，FULL JOIN 关键字就会返回行。
 		mysql> SELECT t1.column1,t2.column1 FROM t1 FULL JOIN t2 ON t1.column2=t2.column2
 		
+		CROSS JOIN--笛卡尔连接，形成n*m列数据，不需要on后面子句
+		
 	
 	UNION:--UNION操作符用于合并两个或多个具有相似结构的SELECT语句
 	
@@ -323,6 +325,7 @@ SQL语句--mysql
 		
 	
 	自定义函数
+	--函数的针对性更强，只有一个返回值，可以灵活的嵌套sql语句
 	
 		--无参数
 		
@@ -340,6 +343,7 @@ SQL语句--mysql
 		--有参数
 		
 		创建：
+		
 				mysql> CREATE FUNCTION func2(num1 INT UNSIGNED,num2 INT UNSIGNED)
 				RETURNS FLOAT(10，2) UNSIGNED
 				RETURN (num1+num2)/2;
@@ -349,13 +353,160 @@ SQL语句--mysql
 				
 		--复合结构
 		
-		
-		
+			DELIMITER// --以//结尾，定义复合结构需要把结尾的符号修改，待定义完成后修改回来
+			
+			创建:
+			
+				mysql> CREATE FUNCTION func3(name VARCHAR(255))
+				RETURNS INT UNSIGNED
+				BEGIN
+				INSERT INTO t1('ID') VALUES(name);
+				RETURN LAST_INSERT_ID()
+				END//
+				
+
+
+七：存储过程
+
+--存储过程实现的功能复杂一些，可以返回多个值，一般独立运行来提高运行效率
+
+	--无参数
 	
+		创建：
 		
+				mysql> CREATE PROCEDURE pro1()
+				SELECT VERSION();
+				
+		调用：
 		
+				mysql> CALL pro1();
+				mysql> CALL pro1;
+ 
+		删除：
 	
+				mysql> DROP PROCEDURE pro1;
+				
+	--带参数
+	
+		创建：
+				mysql> CREATE PROCEDURE pro2(IN num1 INT UNSIGNED)
+				BEGIN
+				DELETE FROM t1 WHERE column1=num1;
+				END//
 		
+	--传递参数
+	
+		创建：
+
+				mysql> CREATE PROCEDURE pro3(IN num1 INT UNSIGNED ,OUT num2 INT UNSIGNED)
+				BEGIN
+				DELETE FROM t1 WHERE column1=num1;
+				SELECT COUNT(column1) FROM t1 INTO num2;
+				END//
+
+		调用： 
+				mysql> CALL pro3(1，@num);
+				mysql> SELECT @num;
+				
+			--结构
+			
+			--声明：@a全局变量，@a局部变量，set @a：=1；select @a：=1；set可以不加：，select必须加
+				set a=1;
+				set a:=1;
+				select @a:=1;
+				
+	--循环
+	
+		--WHILE
+
+			drop PROCEDURE if EXISTS sum1;
+			create procedure sum1(a int) 
+			begin
+				declare sum int default 0;  -- default 是指定该变量的默认值
+				declare i int default 1;
+			while i<=a DO -- 循环开始
+			   set sum=sum+i;
+			   set i=i+1;
+			end while; -- 循环结束
+			select sum;  -- 输出结果
+			end	
+
+		--LOOP
+
+			drop PROCEDURE if EXISTS sum2;
+			create procedure sum2(a int)
+			begin
+					declare sum int default 0;
+					declare i int default 1;
+					loop_name:loop -- 循环开始
+						if i>a then 
+							leave loop_name;  -- 判断条件成立则结束循环  好比java中的 boeak
+						end if;
+						set sum=sum+i;
+						set i=i+1;
+					end loop;  -- 循环结束
+							select sum;
+			end
+
+		--REPEAT
+		
+			drop PROCEDURE if EXISTS sum3;
+			create procedure sum3(a int)
+			begin
+				   declare sum int default 0;
+				   declare i int default 1;
+				   repeat -- 循环开始
+						set sum=sum+i;
+						set i=i+1;
+				   until i>a end repeat; -- 循环结束
+				   select sum; -- 输出结果
+			end
+		
+八：触发器
+
+	语法：
+	
+		CREATE TRIGGER(trigger_name)
+		{BEFORE|AFTER}--设置为事前触发还是事后触发
+		{INSERT|UPDATE|DELETE}--触发事件
+		ON table_name--触发事件的表
+		FOR EACH ROW--执行间隔
+		body--触发sql
+		
+		SHOW TRIGGERS;
+		
+		--new表示新的数据，old表示旧的数据，insert只有new，delete只有old，update都有
+		
+	实例：：
+	
+		--INSERT 
+		
+			DROP TRIGGER IF EXISTS tri1;
+			CREATE TRIGGER tri1
+			AFTER INSERT ON tb1
+			FOR EACH ROW
+			BEGIN
+				INSERT INTO tb2(id) VALUES(new.id);
+			END;
+	
+		--DELETE
+		
+			DROP TRIGGER IF EXISTS tri2;
+			CREATE TRIGGER tri2
+			AFTER DELETE ON tb1
+			FOR EACH ROW
+			BEGIN
+			DELETE FROM tb2 WHERE id=old.id;
+			END;		
+		
+九：SQL小技巧
+	
+	执行计划
+	
+			explain select ………
+			--各参数解释见参考【3】
+			
+	
 	
 		
 		
@@ -405,6 +556,8 @@ SQL语句--mysql
 
 【1】数据类型：http://www.w3school.com.cn/sql/sql_datatypes.asp
 【2】date函数：http://www.w3school.com.cn/sql/sql_dates.asp
+【3】执行计划：http://blog.itpub.net/12679300/viewspace-1394985/
+【4】权限修改：http://www.cnblogs.com/Richardzhu/p/3318595.html
 代理：
 http://blog.csdn.net/xsjyahoo/article/details/51568712
 
