@@ -339,6 +339,8 @@ SQL语句--mysql
 			
 		删除：
 			mysql> DROP FUNCTION func1;
+		查看：
+			mysql> SHOW FUNCTION STATUS WHERE Db='t1'；
 			
 		--有参数
 		
@@ -386,6 +388,10 @@ SQL语句--mysql
 	
 				mysql> DROP PROCEDURE pro1;
 				
+		查看：
+		
+				mysql> show PROCEDURE STATUS where Db='t1'
+				
 	--带参数
 	
 		创建：
@@ -419,8 +425,8 @@ SQL语句--mysql
 	
 		--WHILE
 
-			drop PROCEDURE if EXISTS sum1;
-			create procedure sum1(a int) 
+			mysql> drop PROCEDURE if EXISTS sum1;
+			mysql> create procedure sum1(a int) 
 			begin
 				declare sum int default 0;  -- default 是指定该变量的默认值
 				declare i int default 1;
@@ -433,8 +439,8 @@ SQL语句--mysql
 
 		--LOOP
 
-			drop PROCEDURE if EXISTS sum2;
-			create procedure sum2(a int)
+			mysql> drop PROCEDURE if EXISTS sum2;
+			mysql> create procedure sum2(a int)
 			begin
 					declare sum int default 0;
 					declare i int default 1;
@@ -450,8 +456,8 @@ SQL语句--mysql
 
 		--REPEAT
 		
-			drop PROCEDURE if EXISTS sum3;
-			create procedure sum3(a int)
+			mysql> drop PROCEDURE if EXISTS sum3;
+			mysql> create procedure sum3(a int)
 			begin
 				   declare sum int default 0;
 				   declare i int default 1;
@@ -473,11 +479,12 @@ SQL语句--mysql
 		FOR EACH ROW--执行间隔
 		body--触发sql
 		
-		SHOW TRIGGERS;
+		查看：
+			mysql> SHOW TRIGGERS;
 		
 		--new表示新的数据，old表示旧的数据，insert只有new，delete只有old，update都有
 		
-	实例：：
+	实例：
 	
 		--INSERT 
 		
@@ -499,13 +506,96 @@ SQL语句--mysql
 			DELETE FROM tb2 WHERE id=old.id;
 			END;		
 		
-九：SQL小技巧
+九：系统管理
+			
+	权限管理
+	--mysql数据库用来管理用户和权限，user表存储用户数据
 	
+		创建用户：
+		
+			mysql> CREATE user 'root1'@'localhost' IDENTIFIED by 'root'
+			--无权限,连接之后只有information_schema表可以查看，@前后加不加''都可以
+		
+		授予权限：
+		
+			mysql> GRANT SELECT ON fuliba.* TO root1@localhost
+			mysql> GRANT ALL PRIVILEGES ON *.* TO 'Cshare'@'localhost' WITH GRANT OPTION;
+			--详细的权限范围见参考【4】，create routine 创建function，procedure权限，alter routine则互补
+		
+		撤销权限：
+		
+			mysql> REVOKE SELECT ON fuliba.* FROM root1@localhost
+			
+		刷新权限：
+		
+			mysql> FLUSH PRIVILEGES;
+			--在授予或撤销某项特权以后，将从mysql数据库中的特权表中重新加载所有特权。
+			
+		查看权限：
+		
+			mysql> SHOW GRANTS FOR root1@localhost
+			--查看某个用户的权限
+			
+		删除权限：
+		
+			mysql> DROP USER root2@localhost
+			
+		创建并赋予权限：
+		
+			语法：
+			
+			grant [权限list] on [d1.t1] to [username@hostname] identified by [password] with [options]
+			--[]去掉直接可用，list以,分隔
+			
+			实例：
+			
+			mysql> GRANT ALL PRIVILEGES on *.* to 'root1'@'localhost' IDENTIFIED by 'root' With grant option
+			--赋予root1所有的权限		
+			
+	日志管理
+	
+		my.ini配置文件(默认c盘安装)地址：C:\ProgramData\MySQL\MySQL Server 5.7
+		--开启二进制日志
+		
+		修改my.ini文件步骤：
+		--参考【5】
+			剪切：C:\ProgramData\MySQL\MySQL Server 5.7\my.ini
+			粘贴：D盘
+			修改：my.ini文件
+				# Binary Logging
+				log-bin=mysql-bin
+				binlog-format=Row
+			打开管理员cmd界面
+			copy "D:\my.ini" "C:\ProgramData\MySQL\MySQL Server 5.7"
+			
+		查看
+		
+			mysql> show variables like '%log_bin%';
+			mysql> show binary logs
+			--查看二进制文件，就是查看变量
+			--查看具体的文件目录
+			C:\ProgramData\MySQL\MySQL Server 5.7\Data
+			--里面还有其他类型的日志
+			
+		二进制文件恢复
+		--参考【5】
+			--数据库应定期备份，若在空窗期出现故障，可用二进制文件恢复，查看日志需要转码
+			C:\Users\yq>mysql mysqlbinlog C:\ProgramData\MySQL\MySQL Server 5.7\Data\mysql-bin.000001 >D:\log.txt
+			
+		
+			
+		
+十 SQL优化
+
 	执行计划
 	
-			explain select ………
-			--各参数解释见参考【3】
+			mysql> explain select ………
+			--各参数解释见参考【3】，用来查看sql的执行计划，优化sql常用			
 			
+		
+			
+
+
 	
 	
 		
@@ -557,7 +647,9 @@ SQL语句--mysql
 【1】数据类型：http://www.w3school.com.cn/sql/sql_datatypes.asp
 【2】date函数：http://www.w3school.com.cn/sql/sql_dates.asp
 【3】执行计划：http://blog.itpub.net/12679300/viewspace-1394985/
-【4】权限修改：http://www.cnblogs.com/Richardzhu/p/3318595.html
+【4】权限修改：http://www.cnblogs.com/snsdzjlz320/p/5764977.html
+【5】开启二进制日志：http://www.cnblogs.com/wangwust/p/6433453.html
+【6】恢复二进制日志：http://www.jb51.net/article/54333.htm
 代理：
 http://blog.csdn.net/xsjyahoo/article/details/51568712
 
