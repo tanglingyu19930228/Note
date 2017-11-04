@@ -71,6 +71,15 @@ SQL语句--mysql
 			mysql> ALTER TABLE t1 MODIFY COLUMN column1 INT;
 			--修改column1的数据类型为int，可自定义多样化的datatype
 			
+	3.临时表(TEMPORARY)
+	--在你断开连接是自动删除，用法同table
+	
+		mysql> CREATE TEMPORARY TABLE t1 SELECT * FROM t2;
+		--创建时直接导入数据
+		mysql> CREATE TEMPORARY TABLE t1(name VARCHAR(10) NOT NULL,value INTEGER NOT NULL) TYPE = HEAP ；  
+		--HEAP表示在内存中直接创建，创建形式形如创建table
+	
+			
 二：管理约束
 
 	约束(CONSTRAINTS):
@@ -103,8 +112,8 @@ SQL语句--mysql
 	  
 			CONSTRAINT cons1 FOREIGN KEY (number1) REFERENCES t2(number1),
 			--创建表时命名FOREIGN KEY约束
-			mysql> ALTER TABLE t1 ADD FOREIGN KEY (column1) REFERENCES t2(column1);
-			--当已被创建时，在column1列创建FOREIGN KEY约束
+			mysql> ALTER TABLE t1 ADD FOREIGN KEY (column1) REFERENCES t2(column1) ON DELETE CASCADE ON UPDATE CASCADE
+			--当已被创建时，在column1列创建FOREIGN KEY约束,CASCADE见参考【7】
 			mysql> ALTER TABLE t1 ADD CONSTRAINT cons2 FOREIGN KEY (column1) REFERENCES t2(column1);
 			--当表存在时，命名FOREIGN KEY约束
 			mysql> ALTER TABLE t1 DROP FOREIGN KEY cons2;
@@ -554,91 +563,99 @@ SQL语句--mysql
 			
 	日志管理
 	
-		my.ini配置文件(默认c盘安装)地址：C:\ProgramData\MySQL\MySQL Server 5.7
-		--开启二进制日志
+		创建日志
 		
-		修改my.ini文件步骤：
-		--参考【5】
-			剪切：C:\ProgramData\MySQL\MySQL Server 5.7\my.ini
-			粘贴：D盘
-			修改：my.ini文件
-				# Binary Logging
-				log-bin=mysql-bin
-				binlog-format=Row
-			打开管理员cmd界面
-			copy "D:\my.ini" "C:\ProgramData\MySQL\MySQL Server 5.7"
+			my.ini配置文件(默认c盘安装)地址：C:\ProgramData\MySQL\MySQL Server 5.7
+			--开启二进制日志
 			
-		查看
-		
-			mysql> show variables like '%log_bin%';
-			mysql> show binary logs
-			--查看二进制文件，就是查看变量
-			--查看具体的文件目录
-			C:\ProgramData\MySQL\MySQL Server 5.7\Data
-			--里面还有其他类型的日志
+			修改my.ini文件步骤：
+			--参考【5】
 			
-		二进制文件恢复
-		--参考【5】
-			--数据库应定期备份，若在空窗期出现故障，可用二进制文件恢复，查看日志需要转码
-			C:\Users\yq>mysql mysqlbinlog C:\ProgramData\MySQL\MySQL Server 5.7\Data\mysql-bin.000001 >D:\log.txt
+				剪切：C:\ProgramData\MySQL\MySQL Server 5.7\my.ini
+				粘贴：D盘
+				修改：my.ini文件
+					# Binary Logging
+					log-bin=mysql-bin
+					binlog-format=Row
+					
+					# Binary Logging.
+					log-bin=D:\mysql_log\mysql-bin
+					binlog-format=Row
+					--在D盘下新建一个mysql_log的文件夹
+
+				打开管理员cmd界面
+				copy "D:\my.ini" "C:\ProgramData\MySQL\MySQL Server 5.7"
+				or 剪切回来
+					
+			查看：
 			
-		
+				mysql> show variables like '%log_bin%';
+				mysql> show binary logs
+				--查看二进制文件，就是查看变量
+				--查看具体的文件目录
+				C:\ProgramData\MySQL\MySQL Server 5.7\Data
+				--里面还有其他类型的日志
+				
+			添加：
 			
-		
+				 mysql> FLUSH LOGS;
+				 --产生新的日志文件
+			
+		日志恢复
+		--数据库应定期备份，若在空窗期出现故障，可用二进制文件恢复，参考【5】
+			
+			通过时间恢复：
+			
+				cmd>>> mysqlbinlog mysql-bin.000001 --stop-date="2011-10-23 15:05:00"|mysql -uroot -proot)
+				--cmd模式目录切换到日志所在目录，时间大于故障点即可
+				
+			通过操作点恢复：
+			
+				cmd>>> mysqlbinlog D:\mysql_log\mysql-bin.000001 > D:\log.txt
+				--以txt文档显示日志，查找编号
+				cmd>>> 编号mysqlbinlog mysql-bin.000001 --stop-pos=875 | mysql -uroot -p
+				--恢复mysql-bin.000001文件的开始到875
+				cmd>>> mysqlbinlog mysql-bin.000001 --start-pos=1008 | mysql -uroot -p mytest
+				--恢复mysql-bin.000001文件1008编号到结束
+			
+			
 十 SQL优化
 
 	执行计划
 	
-			mysql> explain select ………
-			--各参数解释见参考【3】，用来查看sql的执行计划，优化sql常用			
+		mysql> explain select ………
+		--各参数解释见参考【3】，用来查看sql的执行计划，优化sql常用
+
+	优化技巧：
+	
+		1.varchar()，int()的宽度可能小，尽量设置NOT NULL
+		
+		2.使用join替代子查询
+		
+		3.union代替手动创建的临时表
+		
+		4.使用事务保持所有的sql语句，要么全部执行，要么都不执行，当多个用户操作数据库时十分有效,事务使用begin，commit将sql包裹
+			BEGIN;
+			sql语句
+			COMMIT;
 			
-		
+		5.锁定表
+			LOCK TABLE t1 WRITE,t2 READ
+			sql语句
+			UNLOCK TABLES;
 			
-
-
-	
-	
+		6.使用外键保证数据的完整性
 		
+		7.使用索引，索引避免建在重复值多的列，应建立在那些将用于JOIN,WHERE判断和ORDERBY排序的字段上
 		
-
-			
-		
-
-
-
-
-		
-
-		
-	
-	
-	
-		
-	
-	
-	
-	
-	
-		
+		8.语句中应让相同类型的字段间进行比较的操作，在建有索引的字段上尽量不要使用函数进行操作，
+		  在搜索字符型字段时，我们有时会使用LIKE关键字和通配符，这种做法虽然简单，但却也是以牺牲系统性能为代价的。
 		
 			
-			
+
+
 	
 	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*参考：
 
@@ -650,6 +667,7 @@ SQL语句--mysql
 【4】权限修改：http://www.cnblogs.com/snsdzjlz320/p/5764977.html
 【5】开启二进制日志：http://www.cnblogs.com/wangwust/p/6433453.html
 【6】恢复二进制日志：http://www.jb51.net/article/54333.htm
+【7】外键约束：http://www.cnblogs.com/love_study/archive/2010/12/02/1894593.html
 代理：
 http://blog.csdn.net/xsjyahoo/article/details/51568712
 
