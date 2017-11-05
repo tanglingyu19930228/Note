@@ -21,7 +21,7 @@ SQL语句--mysql
 				number1 int(10) UNSIGNED NOT NULL,
 				number2 int NOT NULL,
 				name1 VARCHAR(255),
-				name2 VARCHAR(255) ENUM('a','b'),
+				name2 VARCHAR(255) ENUM('a','b') COMMENT('ab之间选择'),
 				name3 VARCHAR(255) DEFAULT 'Cshare',
 				
 				PRIMARY KEY(ID),
@@ -140,8 +140,10 @@ SQL语句--mysql
 			--撤销DEFAULT约束
 			
 	索引(INDEX):
-	--索引有四种：普通，唯一，主键，组合
 	
+	--索引有四种：普通，唯一，主键，组合
+		mysql> INDEX(num1)
+		--创建表的时候加索引，也可以用KEY key1(num1)创建名为key1的索引
 		mysql> SHOW INDEX FROM t1
 		--查看索引
 		mysql> CREATE INDEX index1 ON t1(column1,column2 DESC);
@@ -643,11 +645,13 @@ SQL语句--mysql
 			BEGIN;
 			sql语句
 			COMMIT;
+			--能使用索引的时候，mysql会使用行锁，不能使用则用表锁
 			
 		5.锁定表
 			LOCK TABLE t1 WRITE,t2 READ
 			sql语句
 			UNLOCK TABLES;
+			--加读锁时，其他用户只能读不能写，加写锁时，其他用户被阻塞，直到获取到锁
 			
 		6.使用外键保证数据的完整性
 		
