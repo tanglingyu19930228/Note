@@ -113,7 +113,7 @@ SQL语句--mysql
 			CONSTRAINT cons1 FOREIGN KEY (number1) REFERENCES t2(number1),
 			--创建表时命名FOREIGN KEY约束
 			mysql> ALTER TABLE t1 ADD FOREIGN KEY (column1) REFERENCES t2(column1) ON DELETE CASCADE ON UPDATE CASCADE
-			--当已被创建时，在column1列创建FOREIGN KEY约束,CASCADE见参考【7】
+			--当已被创建时，在column1列创建FOREIGN KEY约束,CASCADE表示同步删除和更新，详见参考【7】
 			mysql> ALTER TABLE t1 ADD CONSTRAINT cons2 FOREIGN KEY (column1) REFERENCES t2(column1);
 			--当表存在时，命名FOREIGN KEY约束
 			mysql> ALTER TABLE t1 DROP FOREIGN KEY cons2;
@@ -140,11 +140,15 @@ SQL语句--mysql
 			--撤销DEFAULT约束
 			
 	索引(INDEX):
+	--索引有四种：普通，唯一，主键，组合
 	
+		mysql> SHOW INDEX FROM t1
+		--查看索引
 		mysql> CREATE INDEX index1 ON t1(column1,column2 DESC);
 		--ASC降序，DESC升序，对涉及到查询的列创建
 		mysql> ALTER TABLE t1 DROP INDEX index1;
 		--删除索引
+		
 			
 三：管理单表
 	
@@ -164,7 +168,7 @@ SQL语句--mysql
 				mysql> SELECT * FROM t1 WHERE column1>100;			
 				mysql> SELECT * FROM t1 WHERE column1 BETWEEN value1 AND value2
 				mysql> SELECT * FROM t1 WHERE column1 BETWEEN 'a' AND 'h';
-				--BETWEEN可以是数字，文本，日期,包含value1，value2，NOT BETWEEN 相补
+				--BETWEEN可以是数字，文本，日期；包含value1，value2；NOT BETWEEN 相补
 				mysql> SELECT * FROM t1 WHERE column1 LIKE 'c%'
 				mysql> SELECT * FROM t1 WHERE column1 NOT LIKE '%c%'
 				--'%'表示一个或多个,'_'表示一个，[charlist],[^charlist]表示字符列中的一个,也用于show语句
@@ -204,8 +208,8 @@ SQL语句--mysql
 		
 	3.UPDATE
 	
-		mysql> UPDATE t1 SET column1=new_value1,column2=new_value2 WHERE column3='Cshare'
-		--column1=new_value为赋值语句column1=column1+1也可，where提供一种多样化的筛选
+		mysql> UPDATE t1 SET column1=value1,column2=value2 WHERE column3='Cshare'
+		--column1=value为赋值语句column1=column1+1也可，where提供一种多样化的筛选
 	
 	4.DELETE
 		
@@ -215,6 +219,7 @@ SQL语句--mysql
 		mysql> DELETE * FROM t1;
 		mysql> TRUNCATE TABLE t1;
 		--清空表格
+		
 		
 四：管理多表
 
@@ -279,7 +284,7 @@ SQL语句--mysql
 			--指定日期格式，%Y2017|%y17
 			
 		NULL判断
-			mysql> WHERE column1 IS NULL
+			mysql> ……WHERE column1 IS NULL
 			--判断是否为空，与IS NOT NULL 相补
 			
 		IFNULL()
@@ -303,7 +308,7 @@ SQL语句--mysql
 		--字符连接
 		
 		CONCAT_WS()
-			mysql> SELECT CONCAT('_',column1，column2) AS column3 FROM t1;
+			mysql> SELECT CONCAT_WS('_',column1，column2) AS column3 FROM t1;
 		--以指定符连接
 		
 		LENGTH()
@@ -315,12 +320,12 @@ SQL语句--mysql
 		--替换
 		
 		CONNECTION_ID(),USER(),VERSION(),
-			mysql>  CONNECTION_ID(),USER(),VERSION();
+			mysql>  SELECT CONNECTION_ID(),USER(),VERSION();
 		--连接ID，用户，版本
 		
 		LAST_INSERT_ID()
 			mysql> SELECT LAST_INSERT_ID() FROM t1;
-		--返回上一条修改的一组数据，第一个自增字段的值,
+		--返回上一条修改的一组数据，第一个自增字段的值,若没有自增字段则为0.
 		
 		ROW_COUNT()
 			mysql> SELECT ROW_COUNT();
@@ -376,10 +381,9 @@ SQL语句--mysql
 				END//
 				
 
-
 七：存储过程
 
---存储过程实现的功能复杂一些，可以返回多个值，一般独立运行来提高运行效率
+--存储过程实现的功能复杂一些，可以返回多个值，一般独立运行来提高运行效率，且只需编译一次
 
 	--无参数
 	
@@ -423,8 +427,6 @@ SQL语句--mysql
 				mysql> CALL pro3(1，@num);
 				mysql> SELECT @num;
 				
-			--结构
-			
 			--声明：@a全局变量，@a局部变量，set @a：=1；select @a：=1；set可以不加：，select必须加
 				set a=1;
 				set a:=1;
@@ -476,6 +478,7 @@ SQL语句--mysql
 				   until i>a end repeat; -- 循环结束
 				   select sum; -- 输出结果
 			end
+			
 		
 八：触发器
 
@@ -488,10 +491,10 @@ SQL语句--mysql
 		FOR EACH ROW--执行间隔
 		body--触发sql
 		
+		--new表示新的数据，old表示旧的数据，insert只有new，delete只有old，update都有
+		
 		查看：
 			mysql> SHOW TRIGGERS;
-		
-		--new表示新的数据，old表示旧的数据，insert只有new，delete只有old，update都有
 		
 	实例：
 	
@@ -512,8 +515,9 @@ SQL语句--mysql
 			AFTER DELETE ON tb1
 			FOR EACH ROW
 			BEGIN
-			DELETE FROM tb2 WHERE id=old.id;
-			END;		
+				DELETE FROM tb2 WHERE id=old.id;
+			END;
+			
 		
 九：系统管理
 			
@@ -573,7 +577,7 @@ SQL语句--mysql
 			
 				剪切：C:\ProgramData\MySQL\MySQL Server 5.7\my.ini
 				粘贴：D盘
-				修改：my.ini文件
+				修改：my.ini文件,任选一种修改，推荐第二种指定日志目录
 					# Binary Logging
 					log-bin=mysql-bin
 					binlog-format=Row
@@ -607,19 +611,19 @@ SQL语句--mysql
 			通过时间恢复：
 			
 				cmd>>> mysqlbinlog mysql-bin.000001 --stop-date="2011-10-23 15:05:00"|mysql -uroot -proot)
-				--cmd模式目录切换到日志所在目录，时间大于故障点即可
+				--cmd模式目录切换到日志所在目录(mysqlbinlog是mysql自带的日志管理工具),时间大于故障点即可
 				
 			通过操作点恢复：
 			
 				cmd>>> mysqlbinlog D:\mysql_log\mysql-bin.000001 > D:\log.txt
 				--以txt文档显示日志，查找编号
-				cmd>>> 编号mysqlbinlog mysql-bin.000001 --stop-pos=875 | mysql -uroot -p
+				cmd>>> mysqlbinlog mysql-bin.000001 --stop-pos=875 | mysql -uroot -p
 				--恢复mysql-bin.000001文件的开始到875
 				cmd>>> mysqlbinlog mysql-bin.000001 --start-pos=1008 | mysql -uroot -p mytest
 				--恢复mysql-bin.000001文件1008编号到结束
 			
 			
-十 SQL优化
+十：SQL优化
 
 	执行计划
 	
@@ -628,6 +632,7 @@ SQL语句--mysql
 
 	优化技巧：
 	
+		/*
 		1.varchar()，int()的宽度可能小，尽量设置NOT NULL
 		
 		2.使用join替代子查询
@@ -650,7 +655,8 @@ SQL语句--mysql
 		
 		8.语句中应让相同类型的字段间进行比较的操作，在建有索引的字段上尽量不要使用函数进行操作，
 		  在搜索字符型字段时，我们有时会使用LIKE关键字和通配符，这种做法虽然简单，但却也是以牺牲系统性能为代价的。
-		
+		  
+		*/
 			
 
 
