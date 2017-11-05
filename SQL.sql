@@ -611,7 +611,7 @@ SQL语句--mysql
 			通过时间恢复：
 			
 				cmd>>> mysqlbinlog mysql-bin.000001 --stop-date="2011-10-23 15:05:00"|mysql -uroot -proot)
-				--cmd模式目录切换到日志所在目录(mysqlbinlog是mysql自带的日志管理工具),时间大于故障点即可
+				--cmd模式目录切换到日志所在目录(mysqlbinlog是mysql自带的日志管理工具，路径包含空格要""),时间大于故障点即可
 				
 			通过操作点恢复：
 			
