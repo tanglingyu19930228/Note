@@ -9,10 +9,19 @@ pyhton的一些模块文档：http://docs.pythontab.com/
 炉石聚合站https://github.com/ieiayaobb/lushi8/blob/lean/README.md
 ping命令设置：https://jingyan.baidu.com/article/f006222826d9bcfbd3f0c89a.html
 释放端口：https://jingyan.baidu.com/article/414eccf674d8ab6b431f0aad.html
+网络共享：https://jingyan.baidu.com/article/c85b7a643badf9003bac950e.html
+Python爬虫爬取知乎小结：http://blog.csdn.net/flovesky/article/details/78207189
+如何用Python+人工识别处理知乎的倒立汉字验证码：http://blog.csdn.net/hudeyu777/article/details/76706007
+pythonProxy 实现代理服务器详解：http://blog.csdn.net/xsjyahoo/article/details/51568712
+Python的hasattr() getattr() setattr() 函数使用方法详解：http://www.cnblogs.com/cenyu/p/5713686.html
+验证码 云打码：http://www.yundama.com/price.html
 
 
 
 
+
+
+许多爬虫代码可看：http://www.cnblogs.com/liuyanpeng93/p/7710719.html
 
 redis
 	redis是一种nosql数据库，多用于分布式的系统之间的通信
@@ -22,6 +31,8 @@ redis
 requests
 	requests库是利用urllib3封装起来的更加抽象的库
 	Requests让 HTTP 服务人类：http://docs.python-requests.org/zh_CN/latest/index.html
+	Python-第三方库requests详解：http://blog.csdn.net/shanzhizi/article/details/50903748
+	requests中会话cookie的增加、更新、删除：http://blog.csdn.net/titiyufeng/article/details/53182951?locationNum=5&fps=1
 
 threading
 多线程模块
@@ -34,6 +45,9 @@ threading的join和setDaemon的区别及用法［例子］：http://blog.csdn.ne
 multiprocessing
 多进程
 python3学习笔记：多进程分布式小例子：http://blog.csdn.net/xionghuixionghui/article/details/68491145
+
+
+
 
 
 jupyter notebook
@@ -59,7 +73,20 @@ pyecharts
 一个百度开源的图表库
 pyecharts：https://github.com/chenjiandongx/pyecharts
 
+socket
+网络通信模块
+Python socket编程学习：http://blog.csdn.net/imzoer/article/details/8626204
 
+
+pd and np
+Stackoverflow系列(1) -Python Pandas与Numpy中axis参数的二义性：http://www.jianshu.com/p/9aa448ea397c
+
+enum
+枚举
+Python 枚举【一】：http://www.cnblogs.com/ucos/p/5896861.html
+
+pyqt
+gui图形库
 
 
 
@@ -69,6 +96,9 @@ pyecharts：https://github.com/chenjiandongx/pyecharts
 应了解的库：
 phantomjs+
 selenium
+
+
+
 
 
 
