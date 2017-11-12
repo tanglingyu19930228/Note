@@ -22,6 +22,7 @@ Python的hasattr() getattr() setattr() 函数使用方法详解：http://www.cnb
 
 
 许多爬虫代码可看：http://www.cnblogs.com/liuyanpeng93/p/7710719.html
+反反爬虫实例：https://github.com/luyishisi/Anti-Anti-Spider
 
 redis
 	redis是一种nosql数据库，多用于分布式的系统之间的通信
@@ -87,6 +88,9 @@ Python 枚举【一】：http://www.cnblogs.com/ucos/p/5896861.html
 
 pyqt
 gui图形库
+
+csv模块
+解决插入的行之间存在空行的情况：http://blog.csdn.net/pfm685757/article/details/47806469
 
 
 
