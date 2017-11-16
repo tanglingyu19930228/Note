@@ -1,5 +1,5 @@
 import pymysql.cursors
-connection=pymysql.connect(host='127.0.0.1',port=3306,user='root',password='cp1193543051',db='fuliba',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
+connection=pymysql.connect(host='127.0.0.1',port=3306,user='root',password='1193543051',db='fuliba',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
 cursor=connection.cursor()
 f="dsggh"
 a=str(4)

@@ -106,7 +106,7 @@ class zhihu():
 
 if __name__=='__main__':
     test=zhihu()
-    #test.login('13006146654','1193543051')
+    #test.login('phonenumber','password')
     params = {'type': 'content', 'q': '爱情'}
     response=test.session.get('https://www.zhihu.com/search',params=params,timeout=10)
     #print(response.request.headers)
