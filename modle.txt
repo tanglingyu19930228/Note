@@ -98,8 +98,12 @@ csv模块
 
 
 应了解的库：
+pyspider
+试试吧：https://www.cnblogs.com/BigFishFly/p/6380046.html
+
 phantomjs+
 selenium
+Python爬虫利器五之Selenium的用法：http://cuiqingcai.com/2599.html
 
 
 
