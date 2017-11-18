@@ -102,9 +102,10 @@ pyspider
 试试吧：https://www.cnblogs.com/BigFishFly/p/6380046.html
 
 phantomjs+
-selenium
+selenium3.7
+Selenium Python文档：https://www.cnblogs.com/taceywong/p/6602927.html?utm_source=tuicool&utm_medium=referral
 Python爬虫利器五之Selenium的用法：http://cuiqingcai.com/2599.html
-
+淘宝美食：https://github.com/Germey/TaobaoProduct
 
 
 
